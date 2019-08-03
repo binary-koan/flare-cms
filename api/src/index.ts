@@ -1,5 +1,6 @@
 import feathers from "@feathersjs/feathers"
 import express from "@feathersjs/express"
+import cors from "cors"
 
 import documents from "./services/documents"
 import mongoose from "mongoose"
@@ -10,6 +11,7 @@ import log from "./hooks/log"
 const app = express(feathers())
 const port = process.env.PORT || 3000
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.configure(express.rest())

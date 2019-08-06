@@ -10,7 +10,15 @@ const theme = {
     secondaryBackground: "#A599E91F",
     secondaryBackgroundStrong: "#A599E92F",
 
-    mutedBackground: "#2D2B55"
+    mutedBackground: "#2D2B55",
+
+    inputBackground: "#A599E91F",
+    inputBorder: "#A599E92F",
+    inputColor: "#FFFFFF",
+
+    inputBackgroundFocus: "#FFFFFF",
+    inputBorderFocus: "#28284E",
+    inputColorFocus: "#28284E"
   }
 }
 

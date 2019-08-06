@@ -1,5 +1,6 @@
 import { Reducer } from "redux"
 import set from "lodash/set"
+import clone from "lodash/clone"
 import { FormState } from "./types"
 import { Action } from "../types"
 
@@ -14,11 +15,26 @@ const reducer: Reducer<FormState, Action> = (state = initialState, action) => {
     case "loadData":
       return { loadingState: "loading" }
     case "dataLoaded":
-      return { loadingState: "loaded", originalData: action.data, currentData: action.data }
+      return {
+        loadingState: "loaded",
+        loadedData: action.data,
+        fieldValues: action.data.current.data
+      }
     case "loadError":
       return { loadingState: "error", error: action.error }
     case "edit":
-      return { ...state, currentData: set(state.currentData, action.path, action.value) }
+      return { ...state, fieldValues: set(clone(state.fieldValues), action.path, action.value) }
+    case "saveDraft":
+      return state.loadingState === "loaded" ? { ...state, savingState: "saving" } : state
+    case "draftSaved":
+      return state.loadingState === "loaded"
+        ? {
+            ...state,
+            savingState: undefined,
+            loadedData: action.data,
+            fieldValues: action.data.current.data
+          }
+        : state
   }
 }
 

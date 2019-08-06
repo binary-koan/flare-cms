@@ -16,7 +16,7 @@ const IconWrapper = styled.svg`
 
 const Icon: React.FunctionComponent<IconProps> = ({ name, type, ...props }) => (
   <IconWrapper {...props}>
-    <use href={`${iconsSvg}#remixicon-${name}-${type || "fill"}`} />
+    <use href={`/${iconsSvg}#remixicon-${name}-${type || "fill"}`} />
   </IconWrapper>
 )
 

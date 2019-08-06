@@ -1,4 +1,4 @@
-import React from "react"
+import React, { HTMLProps } from "react"
 import styled from "styled-components/macro"
 import Icon, { IconProps } from "./Icon"
 
@@ -14,19 +14,22 @@ const BaseButtonWrapper = styled.button`
 `
 
 const ButtonIcon = styled(Icon)`
-  margin-right: 0.25rem;
   font-size: 1.25rem;
+
+  &:not(:last-child) {
+    margin-right: 0.25rem;
+  }
 `
 
-const BaseButton: React.FunctionComponent<{ icon?: string; iconType?: IconProps["type"] }> = ({
-  icon,
-  iconType,
-  children,
-  ...props
-}) => (
+const BaseButton: React.FunctionComponent<
+  any & {
+    icon?: string
+    iconType?: IconProps["type"]
+  }
+> = ({ icon, iconType, children, ...props }) => (
   <BaseButtonWrapper {...props}>
     {icon && <ButtonIcon name={icon} type={iconType} />}
-    {children}
+    {React.Children.count(children) > 0 && <span>{children}</span>}
   </BaseButtonWrapper>
 )
 
@@ -34,4 +37,17 @@ const PrimaryButton = styled(BaseButton)`
   background-color: ${({ theme }) => theme.color.primary};
 `
 
-export { PrimaryButton }
+const SecondaryButton = styled(BaseButton)`
+  background-color: ${({ theme }) => theme.color.secondaryBackground};
+  color: ${({ theme }) => theme.color.bodyColor};
+`
+
+export { PrimaryButton, SecondaryButton }
+
+export const ButtonRow = styled.div`
+  display: flex;
+
+  & ${BaseButtonWrapper}:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+`

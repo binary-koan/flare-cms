@@ -5,6 +5,9 @@ import { Action } from "../store/types"
 function useOperation<Options>(operation: (dispatch: Dispatch<Action>) => void): () => void
 function useOperation<Options>(
   operation: (dispatch: Dispatch<Action>, options: Options) => void
+): (options: Options) => void
+function useOperation<Options>(
+  operation: (dispatch: Dispatch<Action>, options: Options) => void
 ): (options: Options) => void {
   const dispatch = useDispatch()
 

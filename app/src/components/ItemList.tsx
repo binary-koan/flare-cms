@@ -1,6 +1,7 @@
 import styled from "styled-components/macro"
 import React, { ReactNode } from "react"
 import { Link } from "react-router-dom"
+import { History } from "history"
 import Icon from "./Icon"
 
 const ItemList = styled.ul`
@@ -10,6 +11,10 @@ const ItemList = styled.ul`
 const ItemWrapper = styled.li`
   list-style: none;
   display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 0.75rem;
+  }
 `
 
 const ItemEditWrapper = styled(Link)`
@@ -69,17 +74,14 @@ const OptionsIcon = styled(Icon)`
   font-size: 1.25rem;
 `
 
-const Item = ({
-  title,
-  description,
-  caption
-}: {
+const Item: React.FunctionComponent<{
   title: ReactNode
   description: ReactNode
   caption: ReactNode
-}) => (
-  <ItemWrapper>
-    <ItemEditWrapper to="#">
+  to: History.LocationDescriptor<any>
+}> = ({ title, description, caption, to, ...props }) => (
+  <ItemWrapper {...props}>
+    <ItemEditWrapper to={to}>
       <ItemTitle>{title}</ItemTitle>
       <ItemDescription>{description}</ItemDescription>
       <ItemCaption>{caption}</ItemCaption>

@@ -13,6 +13,7 @@ export interface FormattedDocument {
   id: String
   type: String
   createdAt: Date
+  current: FormattedRevision
   revisions: FormattedRevision[]
 }
 
@@ -26,6 +27,7 @@ export default function formatDocument(documentData: DocumentData): FormattedDoc
     id: documentData._id.toString(),
     type: documentData.current.documentType,
     createdAt: documentData.current.documentCreatedAt,
+    current: formatRevision(documentData.current),
     revisions: sortedRevisions.map(formatRevision)
   }
 }

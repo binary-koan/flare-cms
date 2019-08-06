@@ -12,10 +12,10 @@ const DateIcon = styled(Icon)`
   margin-right: 0.25rem;
 `
 
-const DateField: React.FunctionComponent<{ date: Date }> = ({ date }) => (
+const DateField: React.FunctionComponent<{ date?: Date }> = ({ date }) => (
   <DateWrapper>
     <DateIcon name="calendar" type="line" />
-    {format(date, "yyyy-MM-dd hh:mm")}
+    {date ? format(date, "yyyy-MM-dd hh:mm") : "-"}
   </DateWrapper>
 )
 

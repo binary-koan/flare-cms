@@ -6,6 +6,7 @@ import theme from "./styles/theme"
 import Sidebar from "./components/navigation/Sidebar"
 import Home from "./pages/Home"
 import BlogPosts from "./pages/BlogPosts"
+import BlogPost from "./pages/BlogPost"
 import store from "./store"
 import { GlobalStyle } from "./styles/GlobalStyle"
 
@@ -23,7 +24,8 @@ const App = () => (
           <Sidebar />
 
           <Route path="/" exact component={Home} />
-          <Route path="/blog-posts" exact component={BlogPosts} />
+          <Route path="/content/blog-posts" exact component={BlogPosts} />
+          <Route path="/content/blog-posts/:id" exact component={BlogPost} />
         </Wrapper>
       </Router>
     </Provider>

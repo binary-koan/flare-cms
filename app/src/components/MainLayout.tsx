@@ -5,9 +5,12 @@ const MainContent = styled.div`
   padding: 1rem 1.5rem;
   background-color: ${({ theme }) => theme.color.mutedBackground};
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
 `
 
-const SecondaryContent = styled.div``
+const SecondaryContent = styled.div`
+  overflow-y: auto;
+`
 
 const MainLayout = styled.div`
   flex: 1;

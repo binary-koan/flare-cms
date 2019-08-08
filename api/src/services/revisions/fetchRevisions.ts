@@ -1,38 +1,35 @@
-import { mapKeys, isEmpty } from "lodash"
-import Revision, { currentlyLiveExpression } from "../../models/Revision"
+import { isEmpty } from "lodash"
+import Revision from "../../models/Revision"
 import { buildOffsetQuery } from "../../utils/pagination"
 import { RevisionData } from "./formatRevision"
+import buildQuery, { findValidFilters } from "../../utils/buildQuery"
 
-const specialMappings: { [key: string]: string } = {
-  $id: "_id",
-  $createdAt: "createdAt",
-  $updatedAt: "updatedAt",
-  $liveFrom: "liveFrom",
-  $liveUntil: "liveUntil",
-  $deletedAt: "deletedAt",
-  $documentCreatedAt: "documentCreatedAt"
-}
-
-const mapToData = (conditions: { [key: string]: any }) =>
-  mapKeys(conditions, (_, key) => specialMappings[key] || `data.${key}`)
+const whitelist = [
+  "documentId",
+  "documentType",
+  "documentCreatedAt",
+  "liveFrom",
+  "liveUntil",
+  "deletedAt"
+]
 
 export default function fetchRevisions({
   filters = {},
-  sort = { $createdAt: -1 },
+  sort = { documentCreatedAt: -1 },
   offset,
   limit
 }: {
-  filters?: { $id?: any; $createdAt?: any; [field: string]: any }
+  filters?: { [field: string]: any }
   sort?: { [field: string]: number }
   offset?: string
   limit?: number
 }): Promise<RevisionData[]> {
   let query = Revision.find({
-    $and: [mapToData(buildOffsetQuery(offset, sort)), mapToData(filters)]
+    $and: [buildOffsetQuery(offset, sort, whitelist), buildQuery(filters, whitelist)]
   })
 
   if (!isEmpty(sort)) {
-    query = query.sort(mapToData(sort))
+    query = query.sort(findValidFilters(sort, whitelist))
   }
 
   if (limit != null) {

@@ -1,4 +1,4 @@
-import { mapValues } from "lodash"
+import { mapValues, pickBy } from "lodash"
 import { ObjectId } from "bson"
 
 type FilterInput =
@@ -32,16 +32,20 @@ function applyTypeBuilder(
   }
 }
 
-export default function buildQuery(filters: FilterInput): Query {
+export default function buildQuery(filters: FilterInput, whitelist: string[] = []): Query {
   if (typeof filters === "string") {
     return {}
   }
 
-  return mapValues(filters, value => {
+  const validFilters = findValidFilters(filters, whitelist)
+
+  return mapValues(validFilters, value => {
+    if (!value) return
+
     if (typeof value === "string") {
       return value
     } else if (Array.isArray(value)) {
-      return value.map(buildQuery)
+      return value.map(value => buildQuery(value, whitelist))
     }
 
     const typeBuilder = findTypeBuilder(Object.keys(value))
@@ -49,6 +53,10 @@ export default function buildQuery(filters: FilterInput): Query {
       return applyTypeBuilder(value[typeBuilder], TYPE_BUILDERS[typeBuilder])
     }
 
-    return buildQuery(value)
+    return buildQuery(value, whitelist)
   })
+}
+
+export function findValidFilters(filters: { [key: string]: any }, whitelist: string[] = []) {
+  return pickBy(filters, (_, key) => whitelist.includes(key) || /^data\.[a-zA-Z0-9\.]+$/.test(key))
 }

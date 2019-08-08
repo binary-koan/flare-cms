@@ -27,7 +27,7 @@ export async function saveDraft(
     )
 
     if (draft) {
-      await revisionsService.patch(draft.id, fieldValues)
+      await revisionsService.patch(draft.id.$objectId, { data: fieldValues })
     } else {
       await revisionsService.create({
         documentId: loadedData.id,
@@ -37,7 +37,7 @@ export async function saveDraft(
       })
     }
 
-    const data = await documentsService.get(loadedData.id)
+    const data = await documentsService.get(loadedData.id.$objectId)
 
     dispatch({ namespace: "form", type: "draftSaved", data })
   } catch (error) {

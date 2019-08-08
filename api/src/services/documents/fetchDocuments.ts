@@ -1,27 +1,23 @@
-import { map, fromPairs, isEmpty } from "lodash"
+import { map, fromPairs, isEmpty, mapKeys } from "lodash"
 import Revision, { currentlyLiveExpression } from "../../models/Revision"
 import { buildOffsetQuery } from "../../utils/pagination"
 import { DocumentData } from "./formatDocument"
 import buildQuery from "../../utils/buildQuery"
 
-const specialMappings: { [key: string]: (value: any) => [string, any] } = {
-  $id: id => ["_id", { $objectId: id }],
-  $type: type => ["current.documentType", type],
-  $createdAt: createdAt => ["current.documentCreatedAt", createdAt]
+const whitelist = ["id", "type", "createdAt"]
+
+const specialMappings: { [key: string]: string } = {
+  id: "_id",
+  type: "current.documentType",
+  createdAt: "current.documentCreatedAt"
 }
 
 const mapToCurrent = (conditions: { [key: string]: any }) =>
-  buildQuery(
-    fromPairs(
-      map(conditions, (value, key) =>
-        specialMappings[key] ? specialMappings[key](value) : [`current.data.${key}`, value]
-      )
-    )
-  )
+  mapKeys(buildQuery(conditions, whitelist), key => specialMappings[key] || `current.${key}`)
 
 export default function fetchDocuments({
   filters = {},
-  sort = { $createdAt: -1 },
+  sort = { createdAt: -1 },
   offset,
   limit
 }: {

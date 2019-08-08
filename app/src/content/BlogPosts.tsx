@@ -10,10 +10,10 @@ export const ListBlogPosts: React.FunctionComponent<{ documents: any[] }> = ({ d
   <ItemList>
     {documents.map(document => (
       <Item
-        key={document.id}
+        key={document.id.$objectId}
         title={document.current.data.title}
         description={document.current.data.body}
-        to={`/content/blog-posts/${document.id}`}
+        to={`/content/blog-posts/${document.id.$objectId}`}
         caption={
           <FieldRow>
             <TagsField items={document.current.data.tags || []} />

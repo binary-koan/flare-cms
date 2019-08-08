@@ -2,7 +2,7 @@ import { Schema, model, Document, Types } from "mongoose"
 
 export interface IRevision extends Document {
   documentId: Types.ObjectId
-  documentType: String
+  documentType: string
   documentCreatedAt: Date
   liveFrom?: Date
   liveUntil?: Date

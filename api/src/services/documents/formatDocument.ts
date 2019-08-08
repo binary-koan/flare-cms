@@ -2,6 +2,7 @@ import { Types } from "mongoose"
 import { sortBy } from "lodash"
 import { END_OF_TIME } from "../../constants"
 import formatRevision, { RevisionData, FormattedRevision } from "../revisions/formatRevision"
+import { formatJson, JsonDate, ConstrainedJsonResult } from "../../utils/jsonValues"
 
 export interface DocumentData {
   _id: Types.ObjectId
@@ -10,11 +11,11 @@ export interface DocumentData {
 }
 
 export interface FormattedDocument {
-  id: String
-  type: String
-  createdAt: Date
-  current: FormattedRevision
-  revisions: FormattedRevision[]
+  id: string
+  type: string
+  createdAt: JsonDate
+  current: ConstrainedJsonResult<FormattedRevision>
+  revisions: ConstrainedJsonResult<FormattedRevision[]>
 }
 
 export default function formatDocument(documentData: DocumentData): FormattedDocument {
@@ -23,11 +24,11 @@ export default function formatDocument(documentData: DocumentData): FormattedDoc
     revision => revision.liveFrom || END_OF_TIME
   )
 
-  return {
-    id: documentData._id.toString(),
+  return formatJson<FormattedDocument>({
+    id: documentData._id,
     type: documentData.current.documentType,
     createdAt: documentData.current.documentCreatedAt,
     current: formatRevision(documentData.current),
     revisions: sortedRevisions.map(formatRevision)
-  }
+  })
 }

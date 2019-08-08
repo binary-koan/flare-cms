@@ -15,7 +15,7 @@ export default async function createDocuments(
 
       await createRevisions(
         documentData.revisions.map(revision => ({
-          ...revision,
+          ...(revision as any),
           documentId: documentId.toHexString(),
           documentType: documentData.type,
           documentCreatedAt

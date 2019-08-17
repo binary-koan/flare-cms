@@ -25,6 +25,6 @@ export type FormAction =
   | { namespace: "form"; type: "loadData" }
   | { namespace: "form"; type: "dataLoaded"; data: any }
   | { namespace: "form"; type: "loadError"; error: string }
-  | { namespace: "form"; type: "edit"; path: string; value: any }
+  | { namespace: "form"; type: "edit"; path: string | string[]; value: any }
   | { namespace: "form"; type: "saveDraft" }
   | { namespace: "form"; type: "draftSaved"; data: any }

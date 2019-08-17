@@ -1,7 +1,6 @@
-import { Theme } from "../styles/theme"
 import { ThemedStyledComponentsModule } from "styled-components"
 
-export const ModuleInterface: ThemedStyledComponentsModule<Theme>
+export const ModuleInterface: ThemedStyledComponentsModule<{ variables: any }>
 
 export const createGlobalStyle: typeof ModuleInterface.createGlobalStyle
 export const css: typeof ModuleInterface.css

@@ -17,13 +17,21 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
+        test: /\.(png|svg|jpg|gif|woff|woff2)$/,
         use: ["file-loader"]
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"]
+    extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      "@src": path.resolve(__dirname, "src"),
+      "@shared": path.resolve(__dirname, "../shared/src")
+    }
   },
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),
@@ -31,6 +39,7 @@ module.exports = {
   },
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/"
   }
 }

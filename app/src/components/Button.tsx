@@ -9,7 +9,7 @@ const BaseButtonWrapper = styled.button`
   border-radius: 0.25rem;
   padding: 0.75rem 1rem;
   font: inherit;
-  color: ${({ theme }) => theme.color.highlightColor};
+  color: var(--highlight-color);
   cursor: pointer;
 `
 
@@ -34,12 +34,12 @@ const BaseButton: React.FunctionComponent<
 )
 
 const PrimaryButton = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.color.primary};
+  background-color: var(--primary);
 `
 
 const SecondaryButton = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.color.secondaryBackground};
-  color: ${({ theme }) => theme.color.bodyColor};
+  background-color: var(--secondary-background);
+  color: var(--body-color);
 `
 
 export { PrimaryButton, SecondaryButton }

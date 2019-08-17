@@ -1,26 +1,27 @@
+import { css } from "styled-components/macro"
+
 const theme = {
-  color: {
-    bodyBackground: "#28284E",
-    bodyColor: "#FFFFFF",
+  variables: css`
+    --body-background: #28284e;
+    --body-color: #ffffff;
 
-    highlightColor: "#1E1E3F",
-    primary: "#FAD000",
-    secondary: "#A599E9",
+    --highlight-color: #1e1e3f;
+    --primary: #fad000;
+    --secondary: #a599e9;
 
-    secondaryBackground: "#A599E91F",
-    secondaryBackgroundStrong: "#A599E92F",
+    --secondary-background: #a599e91f;
+    --secondary-background-strong: #a599e92f;
 
-    mutedBackground: "#2D2B55",
+    --muted-background: #2d2b55;
 
-    inputBackground: "#A599E91F",
-    inputBorder: "#A599E92F",
-    inputColor: "#FFFFFF",
+    --input-background: #ffffffee;
+    --input-border: #28284e;
+    --input-color: #28284e;
 
-    inputBackgroundFocus: "#FFFFFF",
-    inputBorderFocus: "#28284E",
-    inputColorFocus: "#28284E"
-  }
+    --input-background-focus: #ffffff;
+    --input-border-focus: #28284e;
+    --input-color-focus: #28284e;
+  `
 }
 
 export default theme
-export type Theme = typeof theme

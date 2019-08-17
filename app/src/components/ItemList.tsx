@@ -26,13 +26,13 @@ const ItemEditWrapper = styled(Link)`
   padding: 1.5rem;
   border-top-left-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
-  background-color: ${({ theme }) => theme.color.secondaryBackground};
-  color: ${({ theme }) => theme.color.bodyColor};
+  background-color: var(--secondary-background);
+  color: var(--body-color);
   text-decoration: none;
   transition: all 0.2s;
 
   &:hover {
-    background-color: ${({ theme }) => theme.color.secondaryBackgroundStrong};
+    background-color: var(--secondary-background-strong);
   }
 `
 
@@ -62,11 +62,11 @@ const ItemOptionsWrapper = styled.button`
   border: none;
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
-  background-color: ${({ theme }) => theme.color.secondaryBackground};
+  background-color: var(--secondary-background);
   transition: all 0.2s;
 
   &:hover {
-    background-color: ${({ theme }) => theme.color.secondaryBackgroundStrong};
+    background-color: var(--secondary-background-strong);
   }
 `
 

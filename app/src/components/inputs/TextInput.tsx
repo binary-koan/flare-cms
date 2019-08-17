@@ -27,16 +27,16 @@ const TextInputField = styled.input<{ variant: TextVariant }>`
   border-radius: 0.25rem;
   padding: 0.75rem 1rem;
   font: inherit;
-  background: ${({ theme }) => theme.color.inputBackground};
-  border: 1px solid ${({ theme }) => theme.color.inputBorder};
-  color: ${({ theme }) => theme.color.inputColor};
+  background: var(--input-background);
+  border: 1px solid var(--input-border);
+  color: var(--input-color);
   transition: all 0.2s;
   ${({ variant }) => variants[variant]};
 
   &:focus {
-    background: ${({ theme }) => theme.color.inputBackgroundFocus};
-    border: 1px solid ${({ theme }) => theme.color.inputBorderFocus};
-    color: ${({ theme }) => theme.color.inputColorFocus};
+    background: var(--input-background-focus);
+    border: 1px solid var(--input-border-focus);
+    color: var(--input-color-focus);
   }
 `
 

@@ -10,8 +10,8 @@ const Tag = styled.li`
   list-style: none;
   display: inline-block;
   padding: 0.15rem 0.35rem;
-  background-color: ${({ theme }) => theme.color.secondary};
-  color: ${({ theme }) => theme.color.highlightColor};
+  background-color: var(--secondary);
+  color: var(--highlight-color);
   border-radius: 0.15rem;
 
   &:not(:last-child) {

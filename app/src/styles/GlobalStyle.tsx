@@ -1,7 +1,18 @@
+import "@src/assets/fonts/inter.css"
 import { createGlobalStyle } from "styled-components/macro"
 
 export const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,600,700,800,900&display=swap');
+  /* @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,600,700,800,900&display=swap'); */
+
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+
+  @supports (font-variation-settings: normal) {
+    html {
+      font-family: 'Inter var', sans-serif;
+    }
+  }
 
   html,
   body {
@@ -10,9 +21,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: "Libre Franklin", sans-serif;
-    background-color: ${({ theme }) => theme.color.bodyBackground};
-    color: ${({ theme }) => theme.color.bodyColor};
+    background-color: var(--body-background);
+    color: var(--body-color);
     height: 100%;
   }
 
@@ -20,5 +30,9 @@ export const GlobalStyle = createGlobalStyle`
     font: inherit;
     color: inherit;
     cursor: pointer;
+  }
+
+  :root {
+    ${({ theme }) => theme.variables}
   }
 `

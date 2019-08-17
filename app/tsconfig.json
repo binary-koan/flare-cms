@@ -42,7 +42,9 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "styled-components/macro": ["src/typings/styled-components-macro"]
+      "styled-components/macro": ["src/typings/styled-components-macro"],
+      "@shared/*": ["../shared/src/*"],
+      "@src/*": ["./src/*"]
     },
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */

@@ -2,7 +2,6 @@ import React from "react"
 import styled from "styled-components/macro"
 import CKEditor from "@ckeditor/ckeditor5-react"
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
-import Input from "../Input"
 
 const Wrapper = styled.div`
   /* Overrides the border radius setting in the theme. */
@@ -115,22 +114,18 @@ const Wrapper = styled.div`
 `
 
 const RichTextInput: React.FunctionComponent<{
-  label: string
+  id: string
   value: string
   onChange: (value: string) => void
-}> = ({ label, value, onChange, ...props }) => {
+}> = ({ id, value, onChange, ...props }) => {
   return (
-    <Input label={label} {...props}>
-      {_ => (
-        <Wrapper>
-          <CKEditor
-            editor={ClassicEditor}
-            data={value}
-            onChange={(_event, editor) => onChange(editor.getData())}
-          />
-        </Wrapper>
-      )}
-    </Input>
+    <Wrapper>
+      <CKEditor
+        editor={ClassicEditor}
+        data={value}
+        onChange={(_event, editor) => onChange(editor.getData())}
+      />
+    </Wrapper>
   )
 }
 

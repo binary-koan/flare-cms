@@ -19,9 +19,9 @@ const Tag = styled.li`
   }
 `
 
-const TagsField: React.FunctionComponent<{ items: string[] }> = ({ items }) => (
+const TagsField: React.FunctionComponent<{ value: string[] }> = ({ value }) => (
   <TagsWrapper>
-    {items.map(item => (
+    {value.map(item => (
       <Tag key={item}>{item}</Tag>
     ))}
   </TagsWrapper>

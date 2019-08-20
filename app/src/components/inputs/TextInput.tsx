@@ -1,6 +1,5 @@
 import React from "react"
 import styled, { css } from "styled-components/macro"
-import Input from "../Input"
 
 const variants = {
   heading1: css`
@@ -42,22 +41,19 @@ const TextInputField = styled.input<{ variant: TextVariant }>`
 
 const TextInput: React.FunctionComponent<{
   variant: TextVariant
-  label: string
+  id: string
   value: string
   onChange: (value: string) => void
-}> = ({ variant, value, onChange, ...props }) => (
-  <Input {...props}>
-    {id => (
-      <TextInputField
-        id={id}
-        name={id}
-        variant={variant}
-        type="text"
-        value={value}
-        onChange={e => onChange(e.target.value)}
-      />
-    )}
-  </Input>
+}> = ({ id, variant, value, onChange, ...props }) => (
+  <TextInputField
+    id={id}
+    name={id}
+    variant={variant}
+    type="text"
+    value={value}
+    onChange={e => onChange(e.target.value)}
+    {...props}
+  />
 )
 
 export default TextInput

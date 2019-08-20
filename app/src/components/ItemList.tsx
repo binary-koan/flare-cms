@@ -40,14 +40,26 @@ const ItemTitle = styled.h3`
   font-size: 1.25rem;
   line-height: 1;
   margin: 0 0 0.5rem 0;
+
+  &:empty {
+    display: none;
+  }
 `
 
 const ItemDescription = styled.div`
   margin: 0 0 0.75rem 0;
+
+  &:empty {
+    display: none;
+  }
 `
 
 const ItemCaption = styled.div`
   margin: 0;
+
+  &:empty {
+    display: none;
+  }
 `
 
 const EditIcon = styled(Icon)`
@@ -82,9 +94,9 @@ const Item: React.FunctionComponent<{
 }> = ({ title, description, caption, to, ...props }) => (
   <ItemWrapper {...props}>
     <ItemEditWrapper to={to}>
-      <ItemTitle>{title}</ItemTitle>
-      <ItemDescription>{description}</ItemDescription>
-      <ItemCaption>{caption}</ItemCaption>
+      {<ItemTitle>{title}</ItemTitle>}
+      {<ItemDescription>{description}</ItemDescription>}
+      {<ItemCaption>{caption}</ItemCaption>}
 
       <EditIcon name="pencil" />
     </ItemEditWrapper>

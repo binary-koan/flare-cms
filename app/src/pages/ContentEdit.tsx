@@ -7,8 +7,10 @@ import Loading from "../components/Loading"
 import FatalError from "../components/FatalError"
 import useOperation from "../hooks/useOperation"
 import { loadData, saveDraft } from "../store/form/operations"
-import { BlogPostForm } from "../content/BlogPosts"
 import { withRouter, RouteComponentProps } from "react-router"
+import { ContentType } from "@shared/types"
+import Form from "@src/components/Form"
+import Editor from "@src/components/Editor"
 
 const Header = styled.div`
   display: flex;
@@ -21,14 +23,12 @@ const Title = styled.h1`
   font-size: 1.563rem;
 `
 
-const BlogPosts: React.FunctionComponent<RouteComponentProps<{ id: string }>> = ({
-  match,
-  ...props
-}) => {
+const ContentEdit: React.FunctionComponent<
+  RouteComponentProps<{ id: string }> & { contentType: ContentType }
+> = ({ match, contentType, ...props }) => {
   const formState = useSelector(state => state.form, shallowEqual)
   const load = useOperation(loadData)
   const save = useOperation(saveDraft)
-  const dispatch = useDispatch()
 
   useEffect(() => {
     load({ id: match.params.id })
@@ -61,17 +61,15 @@ const BlogPosts: React.FunctionComponent<RouteComponentProps<{ id: string }>> = 
           </ButtonRow>
         </Header>
 
-        <BlogPostForm
-          document={formState.loadedData}
-          fieldValues={formState.fieldValues}
-          edit={(fieldPath, value) =>
-            dispatch({ namespace: "form", type: "edit", path: fieldPath, value })
-          }
-        />
+        <Form>
+          {contentType.content.map(item => (
+            <Editor key={item.id} path={[item.id]} name={item.name} attributeType={item.type} />
+          ))}
+        </Form>
       </MainContent>
       <SecondaryContent />
     </MainLayout>
   )
 }
 
-export default withRouter(BlogPosts)
+export default withRouter(ContentEdit)

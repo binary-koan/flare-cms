@@ -11,6 +11,9 @@ import { ContentType } from "@shared/types"
 import ItemList, { Item } from "@src/components/ItemList"
 import FieldRow from "@src/components/fields/FieldRow"
 import Field from "@src/components/Field"
+import Filters from "@src/components/Filters"
+import { Link } from "react-router-dom"
+import useRouter from "@src/hooks/useRouter"
 
 const Header = styled.div`
   display: flex;
@@ -27,7 +30,7 @@ const DocumentField: React.FunctionComponent<{
   field: string
   contentType: ContentType
 }> = ({ document, field, contentType, ...props }) => {
-  const attribute = contentType.content.find(attribute => attribute.id === field)
+  const attribute = contentType.attributes.find(attribute => attribute.id === field)
 
   if (!attribute) return null
 
@@ -68,6 +71,7 @@ const ContentList: React.FunctionComponent<{ contentType: ContentType }> = ({
 }) => {
   const listState = useSelector(state => state.list, shallowEqual)
   const load = useOperation(loadData)
+  const { history } = useRouter()
 
   useEffect(() => {
     load()
@@ -91,25 +95,32 @@ const ContentList: React.FunctionComponent<{ contentType: ContentType }> = ({
     <MainLayout {...props}>
       <MainContent>
         <Header>
-          <Title>Blog Posts</Title>
-          <PrimaryButton icon="add">Create Post</PrimaryButton>
+          <Title>{contentType.name}</Title>
+          <PrimaryButton icon="add" onClick={() => history.push(`/content/${contentType.id}/new`)}>
+            Create {contentType.singularName}
+          </PrimaryButton>
         </Header>
 
         <ItemList>
           {listState.data.map(document => (
             <Item
               key={document.id.$objectId}
-              title={listView.titleFields && presentFields(document, listView.titleFields)}
+              title={listView.titleAttributes && presentFields(document, listView.titleAttributes)}
               description={
-                listView.descriptionFields && presentFields(document, listView.descriptionFields)
+                listView.descriptionAttributes &&
+                presentFields(document, listView.descriptionAttributes)
               }
-              caption={listView.captionFields && presentFields(document, listView.captionFields)}
+              caption={
+                listView.captionAttributes && presentFields(document, listView.captionAttributes)
+              }
               to={`/content/${contentType.id}/${document.id.$objectId}`}
             />
           ))}
         </ItemList>
       </MainContent>
-      <SecondaryContent />
+      <SecondaryContent>
+        <Filters listView={listView} />
+      </SecondaryContent>
     </MainLayout>
   )
 }

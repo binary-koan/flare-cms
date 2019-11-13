@@ -9,11 +9,22 @@ const config: Config = {
       listViews: [
         {
           type: "cards",
-          titleFields: ["title"],
-          descriptionFields: ["body"]
+          titleAttributes: ["title"],
+          descriptionAttributes: ["body"],
+          filters: [
+            {
+              type: "contains",
+              name: "Search ...",
+              attributes: ["title", "body"],
+              editor: {
+                type: "text",
+                variant: "paragraph"
+              }
+            }
+          ]
         }
       ],
-      content: [
+      attributes: [
         {
           id: "title",
           name: "Title",

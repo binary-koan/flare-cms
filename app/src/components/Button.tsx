@@ -1,4 +1,4 @@
-import React, { HTMLProps } from "react"
+import React from "react"
 import styled from "styled-components/macro"
 import Icon, { IconProps } from "./Icon"
 
@@ -11,6 +11,11 @@ const BaseButtonWrapper = styled.button`
   font: inherit;
   color: var(--highlight-color);
   cursor: pointer;
+
+  &[disabled] {
+    opacity: 0.7;
+    pointer-events: none;
+  }
 `
 
 const ButtonIcon = styled(Icon)`

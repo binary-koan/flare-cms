@@ -1,22 +1,46 @@
 import { Reducer } from "redux"
-import { ListState } from "./types"
+import { ListState, ListFilter } from "./types"
 import { Action } from "../types"
 
 const initialState: ListState = { loadingState: "loading" }
 
-const reducer: Reducer<ListState, Action> = (state = initialState, action) => {
+const reducer: Reducer<any, Action> = (state = initialState, action) => {
   if (action.namespace !== "list") {
     return state
   }
 
   switch (action.type) {
     case "loadData":
-      return { loadingState: "loading", data: state.data }
+      return { ...state, loadingState: "loading", data: state.data }
     case "dataLoaded":
-      return { loadingState: "loaded", data: action.data }
+      return { ...state, loadingState: "loaded", data: action.data }
     case "loadError":
-      return { loadingState: "error", error: action.error }
+      return { ...state, loadingState: "error", error: action.error }
+    case "setFilters":
+      console.log("new filters", dedupeFilters(action.filters, state.filters || []))
+      return {
+        ...state,
+        filters: dedupeFilters(action.filters, state.filters || [])
+      }
   }
+}
+
+const dedupeFilters = (newFilters: ListFilter[], existingFilters: ListFilter[]) => {
+  const filters = [...existingFilters]
+
+  newFilters.forEach(filter => {
+    const existingIndex = filters.findIndex(
+      other => other.name === filter.name && other.attribute === filter.attribute
+    )
+
+    if (existingIndex) {
+      filters.splice(existingIndex, 1, filter)
+    } else {
+      filters.push(filter)
+    }
+  })
+
+  return filters
 }
 
 export default reducer

@@ -68,7 +68,7 @@ export function parseJson(object: JsonValue): any {
   } else if (Array.isArray(object)) {
     return object.map(parseJson)
   } else if ((object as any).$date) {
-    return new Date(object.toString())
+    return new Date((object as any).$date.toString())
   } else if ((object as any).$objectId) {
     return ObjectId.createFromHexString((object as any).$objectId)
   } else if (isPlainObject(object)) {

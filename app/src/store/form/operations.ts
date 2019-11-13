@@ -1,9 +1,10 @@
 import { Dispatch } from "redux"
-import { Action } from "../types"
+import { Action, State } from "../types"
 import { documentsService, revisionsService } from "../feathers"
 import { FormState } from "./types"
+import { ContentType } from "@shared/types"
 
-export async function loadData(dispatch: Dispatch<Action>, { id }: { id: string }) {
+export async function loadData(dispatch: Dispatch<Action>, _state: State, { id }: { id: string }) {
   dispatch({ namespace: "form", type: "loadData" })
 
   try {
@@ -15,8 +16,21 @@ export async function loadData(dispatch: Dispatch<Action>, { id }: { id: string 
   }
 }
 
+export async function loadBlankData(
+  dispatch: Dispatch<Action>,
+  _state: State,
+  { contentType }: { contentType: ContentType }
+) {
+  dispatch({
+    namespace: "form",
+    type: "dataLoaded",
+    data: { type: contentType.id, revisions: [], current: { data: {} } }
+  })
+}
+
 export async function saveDraft(
   dispatch: Dispatch<Action>,
+  _state: State,
   { loadedData, fieldValues }: Pick<FormState, "loadedData" | "fieldValues">
 ) {
   dispatch({ namespace: "form", type: "saveDraft" })
@@ -26,7 +40,16 @@ export async function saveDraft(
       (revision: any) => !revision.liveFrom && !revision.liveUntil
     )
 
-    if (draft) {
+    let documentId = loadedData.id
+
+    if (!documentId) {
+      const result = await documentsService.create({
+        type: loadedData.type,
+        revisions: [{ data: fieldValues }]
+      })
+
+      documentId = result.id
+    } else if (draft) {
       await revisionsService.patch(draft.id.$objectId, { data: fieldValues })
     } else {
       await revisionsService.create({
@@ -37,7 +60,7 @@ export async function saveDraft(
       })
     }
 
-    const data = await documentsService.get(loadedData.id.$objectId)
+    const data = await documentsService.get(documentId.$objectId)
 
     dispatch({ namespace: "form", type: "draftSaved", data })
   } catch (error) {

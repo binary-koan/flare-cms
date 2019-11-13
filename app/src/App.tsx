@@ -1,12 +1,13 @@
 import React from "react"
 import styled, { ThemeProvider } from "styled-components/macro"
-import { BrowserRouter as Router, Route } from "react-router-dom"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { Provider } from "react-redux"
 import theme from "./styles/theme"
 import Sidebar from "./components/navigation/Sidebar"
 import Home from "./pages/Home"
 import ContentList from "./pages/ContentList"
 import ContentEdit from "./pages/ContentEdit"
+import ContentNew from "./pages/ContentNew"
 import store from "./store"
 import { GlobalStyle } from "./styles/GlobalStyle"
 
@@ -29,16 +30,23 @@ const App = () => (
 
           {config.contentTypes.map(contentType => (
             <React.Fragment key={contentType.id}>
-              <Route
-                path={`/content/${contentType.id}`}
-                exact
-                render={() => <ContentList contentType={contentType} />}
-              />
-              <Route
-                path={`/content/${contentType.id}/:id`}
-                exact
-                render={() => <ContentEdit contentType={contentType} />}
-              />
+              <Switch>
+                <Route
+                  path={`/content/${contentType.id}`}
+                  exact
+                  render={() => <ContentList contentType={contentType} />}
+                />
+                <Route
+                  path={`/content/${contentType.id}/new`}
+                  exact
+                  render={() => <ContentNew contentType={contentType} />}
+                />
+                <Route
+                  path={`/content/${contentType.id}/:id`}
+                  exact
+                  render={() => <ContentEdit contentType={contentType} />}
+                />
+              </Switch>
             </React.Fragment>
           ))}
         </Wrapper>

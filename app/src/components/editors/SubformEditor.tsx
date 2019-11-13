@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components/macro"
 import { ObjectAttributeType } from "@shared/types"
-import Editor from "@src/components/Editor"
+import Editor from "../Editor"
 
 const Panel = styled.div`
   border-radius: 0.25rem;
@@ -14,7 +14,7 @@ const SubformEditor: React.FunctionComponent<{
   attributeType: ObjectAttributeType
 }> = ({ path, attributeType, ...props }) => (
   <Panel {...props}>
-    {attributeType.content.map(item => (
+    {attributeType.attributes.map(item => (
       <Editor path={[...path, item.id]} name={item.name} attributeType={item.type} />
     ))}
   </Panel>

@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.configure(express.rest())
 
 mongoose.set("debug", true)
-mongoose.connect("mongodb://localhost:27017/flare-cms-development", {
+mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/flare-cms-development", {
   useNewUrlParser: true,
   useCreateIndex: true
 })

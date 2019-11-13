@@ -16,9 +16,9 @@ export default async function createDocuments(
       await createRevisions(
         documentData.revisions.map(revision => ({
           ...(revision as any),
-          documentId: documentId.toHexString(),
+          documentId: { $objectId: documentId.toHexString() },
           documentType: documentData.type,
-          documentCreatedAt
+          documentCreatedAt: { $date: documentCreatedAt.toString() }
         }))
       )
 

@@ -6,11 +6,11 @@ import { PrimaryButton, SecondaryButton, ButtonRow } from "../components/Button"
 import Loading from "../components/Loading"
 import FatalError from "../components/FatalError"
 import useOperation from "../hooks/useOperation"
-import { loadData, saveDraft } from "../store/form/operations"
-import { withRouter, RouteComponentProps } from "react-router"
+import { loadBlankData, saveDraft } from "../store/form/operations"
 import { ContentType } from "@shared/types"
 import Form from "@src/components/Form"
 import Editor from "@src/components/Editor"
+import useRouter from "@src/hooks/useRouter"
 
 const Header = styled.div`
   display: flex;
@@ -23,16 +23,24 @@ const Title = styled.h1`
   font-size: 1.563rem;
 `
 
-const ContentEdit: React.FunctionComponent<
-  RouteComponentProps<{ id: string }> & { contentType: ContentType }
-> = ({ match, contentType, ...props }) => {
+const ContentNew: React.FunctionComponent<{ contentType: ContentType }> = ({
+  contentType,
+  ...props
+}) => {
   const formState = useSelector(state => state.form, shallowEqual)
-  const load = useOperation(loadData)
+  const initialize = useOperation(loadBlankData)
   const save = useOperation(saveDraft)
+  const { history } = useRouter()
 
   useEffect(() => {
-    load({ id: match.params.id })
+    initialize({ contentType })
   }, [])
+
+  useEffect(() => {
+    if (formState.loadedData && formState.loadedData.id) {
+      history.push(`/content/${contentType.id}/${formState.loadedData.id.$objectId}`)
+    }
+  }, [formState.loadedData && formState.loadedData.id])
 
   if (formState.loadingState === "loading") {
     return <Loading />
@@ -46,7 +54,7 @@ const ContentEdit: React.FunctionComponent<
     <MainLayout {...props}>
       <MainContent>
         <Header>
-          <Title>Edit Blog Post</Title>
+          <Title>New {contentType.singularName}</Title>
           <ButtonRow>
             <PrimaryButton
               icon="save-2"
@@ -56,8 +64,8 @@ const ContentEdit: React.FunctionComponent<
             >
               Save Draft
             </PrimaryButton>
-            <SecondaryButton icon="file-copy" iconType="line" />
-            <SecondaryButton icon="archive" iconType="line" />
+            <SecondaryButton disabled icon="file-copy" iconType="line" />
+            <SecondaryButton disabled icon="archive" iconType="line" />
           </ButtonRow>
         </Header>
 
@@ -72,4 +80,4 @@ const ContentEdit: React.FunctionComponent<
   )
 }
 
-export default withRouter(ContentEdit)
+export default ContentNew

@@ -1,0 +1,41 @@
+version: "3.6"
+
+services:
+  db:
+    image: mongo:4
+    volumes:
+      - db:/data/db
+
+  api:
+    image: node:12
+    depends_on:
+      - db
+    working_dir: /data
+    volumes:
+      - ./api:/data/api
+      - ./shared:/data/shared
+    environment:
+      PORT: 3000
+      MONGO_URL: mongodb://db:27017/flare-cms
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    command: sh -c 'cd api && yarn install && yarn start'
+
+  app:
+    image: node:12
+    working_dir: /data
+    volumes:
+      - ./app:/data/app
+      - ./shared:/data/shared
+    environment:
+      PORT: 8080
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    command: sh -c 'cd app && yarn install && yarn start'
+
+volumes:
+  db:

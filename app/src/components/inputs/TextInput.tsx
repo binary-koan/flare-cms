@@ -42,7 +42,7 @@ const TextInputField = styled.input<{ variant: TextVariant }>`
 const TextInput: React.FunctionComponent<{
   variant: TextVariant
   id: string
-  value: string
+  value: string | null
   onChange: (value: string) => void
 }> = ({ id, variant, value, onChange, ...props }) => (
   <TextInputField
@@ -50,7 +50,7 @@ const TextInput: React.FunctionComponent<{
     name={id}
     variant={variant}
     type="text"
-    value={value}
+    value={value || ""}
     onChange={e => onChange(e.target.value)}
     {...props}
   />

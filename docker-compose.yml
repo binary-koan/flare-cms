@@ -13,6 +13,7 @@ services:
     working_dir: /data
     volumes:
       - ./api:/data/api
+      - api_node_modules:/data/node_modules
       - ./shared:/data/shared
     environment:
       PORT: 3000
@@ -21,13 +22,14 @@ services:
       - 3000
     ports:
       - 3000:3000
-    command: sh -c 'cd api && yarn install && yarn start'
+    command: sh -c 'cd api && yarn install --frozen-lockfile --modules-folder /data/node_modules && yarn start'
 
   app:
     image: node:12
     working_dir: /data
     volumes:
       - ./app:/data/app
+      - app_node_modules:/data/node_modules
       - ./shared:/data/shared
     environment:
       PORT: 8080
@@ -35,7 +37,9 @@ services:
       - 8080
     ports:
       - 8080:8080
-    command: sh -c 'cd app && yarn install && yarn start'
+    command: sh -c 'cd app && yarn install --frozen-lockfile --modules-folder /data/node_modules && yarn start'
 
 volumes:
   db:
+  api_node_modules:
+  app_node_modules:

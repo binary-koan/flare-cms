@@ -1,3 +1,5 @@
+import isPlainObject from "lodash/isPlainObject"
+import mapValues from "lodash/mapValues"
 import feathers from "@feathersjs/feathers"
 import fetchDocuments from "./documents/fetchDocuments"
 import formatDocument, { FormattedDocument } from "./documents/formatDocument"
@@ -6,6 +8,20 @@ import deleteDocument from "./documents/deleteDocument"
 
 const DEFAULT_LIMIT = 10
 
+const fixArrayParams = (params: any): any => {
+  if (isPlainObject(params)) {
+    if (Object.keys(params).every(key => /^\d+$/.test(key))) {
+      return Object.values(params)
+    }
+
+    return mapValues(params, fixArrayParams)
+  } else if (Array.isArray(params)) {
+    return params.map(fixArrayParams)
+  } else {
+    return params
+  }
+}
+
 const documents: Partial<feathers.Service<FormattedDocument>> = {
   async find(params = {}) {
     params.query = params.query || {}
@@ -13,7 +29,7 @@ const documents: Partial<feathers.Service<FormattedDocument>> = {
     const { $sort, $offset, $limit = DEFAULT_LIMIT, ...filters } = params.query
 
     const data = await fetchDocuments({
-      filters,
+      filters: fixArrayParams(filters),
       sort: $sort,
       offset: $offset,
       limit: $limit

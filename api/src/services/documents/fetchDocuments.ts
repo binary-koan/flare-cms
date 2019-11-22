@@ -13,7 +13,7 @@ const specialMappings: { [key: string]: string } = {
 }
 
 const mapToCurrent = (conditions: { [key: string]: any }) =>
-  mapKeys(buildQuery(conditions, whitelist), key => specialMappings[key] || `current.${key}`)
+  mapKeys(conditions, (_, key) => specialMappings[key] || `current.${key}`)
 
 export default function fetchDocuments({
   filters = {},
@@ -35,7 +35,10 @@ export default function fetchDocuments({
       }
     })
     .match({
-      $and: [mapToCurrent(buildOffsetQuery(offset, sort)), mapToCurrent(filters)]
+      $and: [
+        mapToCurrent(buildOffsetQuery(offset, sort)),
+        buildQuery(filters, whitelist, { prefix: "current" })
+      ]
     })
 
   if (!isEmpty(sort)) {

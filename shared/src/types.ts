@@ -36,6 +36,7 @@ export type Filter =
   | {
       type: "equals"
       name: string
+      default?: string
       attribute: string
       editor:
         | StringEditor
@@ -45,7 +46,7 @@ export type Filter =
         | StringArrayEditor
         | ObjectArrayEditor
     }
-  | { type: "contains"; name: string; attributes: string[]; editor: StringEditor }
+  | { type: "contains"; name: string; default?: string; attributes: string[]; editor: StringEditor }
 
 export interface ContentAttribute {
   id: string

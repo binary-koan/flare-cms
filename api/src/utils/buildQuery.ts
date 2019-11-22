@@ -1,5 +1,6 @@
-import { mapValues, pickBy } from "lodash"
+import { mapValues, pickBy, mapKeys } from "lodash"
 import { ObjectId } from "bson"
+import isPlainObject = require("lodash/isPlainObject")
 
 type FilterInput =
   | string
@@ -8,6 +9,20 @@ type FilterInput =
   | { [key: string]: FilterInput[] }
 
 type Query = { [key: string]: any }
+
+const OPERATORS = [
+  "$eq",
+  "$ne",
+  "$gt",
+  "$gte",
+  "$lt",
+  "$lte",
+  "$in",
+  "$nin",
+  "$regex",
+  "$and",
+  "$or"
+]
 
 const TYPE_BUILDERS: { [key: string]: (value?: string) => any } = {
   $null: () => null,
@@ -32,31 +47,51 @@ function applyTypeBuilder(
   }
 }
 
-export default function buildQuery(filters: FilterInput, whitelist: string[] = []): Query {
+export default function buildQuery(
+  filters: FilterInput,
+  whitelist: string[] = [],
+  { prefix }: { prefix?: string } = {}
+): Query {
   if (typeof filters === "string") {
     return {}
   }
 
-  const validFilters = findValidFilters(filters, whitelist)
+  const validFilters = applyPrefix(findValidFilters(filters, whitelist), prefix)
 
-  return mapValues(validFilters, value => {
-    if (!value) return
-
-    if (typeof value === "string") {
-      return value
-    } else if (Array.isArray(value)) {
-      return value.map(value => buildQuery(value, whitelist))
-    }
-
-    const typeBuilder = findTypeBuilder(Object.keys(value))
-    if (typeBuilder) {
-      return applyTypeBuilder(value[typeBuilder], TYPE_BUILDERS[typeBuilder])
-    }
-
-    return buildQuery(value, whitelist)
-  })
+  return mapValues(validFilters, value => buildPartialQuery(value, { whitelist, prefix }))
 }
 
+const buildPartialQuery = (
+  value: any,
+  { whitelist, prefix }: { whitelist: string[]; prefix?: string }
+): any => {
+  if (!value) return
+
+  if (Array.isArray(value)) {
+    return value.map(value => buildPartialQuery(value, { whitelist, prefix }))
+  }
+
+  if (!isPlainObject(value)) {
+    return value
+  }
+
+  const typeBuilder = findTypeBuilder(Object.keys(value))
+  if (typeBuilder) {
+    return applyTypeBuilder(value[typeBuilder], TYPE_BUILDERS[typeBuilder])
+  }
+
+  return mapValues(applyPrefix(value, prefix), childValue =>
+    buildPartialQuery(childValue, { whitelist, prefix })
+  )
+}
+
+const applyPrefix = (object: { [key: string]: any }, prefix?: string) =>
+  mapKeys(object, (_, key) => (prefix && !key.startsWith("$") ? `${prefix}.${key}` : key))
+
 export function findValidFilters(filters: { [key: string]: any }, whitelist: string[] = []) {
-  return pickBy(filters, (_, key) => whitelist.includes(key) || /^data\.[a-zA-Z0-9\.]+$/.test(key))
+  return pickBy(
+    filters,
+    (_, key) =>
+      whitelist.includes(key) || OPERATORS.includes(key) || /^data\.[a-zA-Z0-9\.]+$/.test(key)
+  )
 }

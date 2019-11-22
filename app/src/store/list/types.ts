@@ -13,4 +13,10 @@ export type ListAction =
   | { namespace: "list"; type: "dataLoaded"; data: any[] }
   | { namespace: "list"; type: "loadError"; error: string }
 
-export type ListFilter = { name: string; attribute: string; operator: string; value: any }
+export type ListFilter = {
+  name: string
+  attributes: string[]
+  operator: string
+  value: any
+  displayValue: any
+}

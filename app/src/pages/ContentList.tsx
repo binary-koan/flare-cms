@@ -12,7 +12,6 @@ import ItemList, { Item } from "@src/components/ItemList"
 import FieldRow from "@src/components/fields/FieldRow"
 import Field from "@src/components/Field"
 import Filters from "@src/components/Filters"
-import { Link } from "react-router-dom"
 import useRouter from "@src/hooks/useRouter"
 
 const Header = styled.div`
@@ -77,7 +76,7 @@ const ContentList: React.FunctionComponent<{ contentType: ContentType }> = ({
     load()
   }, [])
 
-  if (listState.loadingState === "loading") {
+  if (listState.loadingState === "loading" && !listState.data) {
     return <Loading />
   }
 
@@ -102,7 +101,7 @@ const ContentList: React.FunctionComponent<{ contentType: ContentType }> = ({
         </Header>
 
         <ItemList>
-          {listState.data.map(document => (
+          {listState.data?.map(document => (
             <Item
               key={document.id.$objectId}
               title={listView.titleAttributes && presentFields(document, listView.titleAttributes)}

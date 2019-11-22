@@ -11,16 +11,15 @@ const reducer: Reducer<any, Action> = (state = initialState, action) => {
 
   switch (action.type) {
     case "loadData":
-      return { ...state, loadingState: "loading", data: state.data }
+      return { ...state, loadingState: "loading" }
     case "dataLoaded":
       return { ...state, loadingState: "loaded", data: action.data }
     case "loadError":
       return { ...state, loadingState: "error", error: action.error }
     case "setFilters":
-      console.log("new filters", dedupeFilters(action.filters, state.filters || []))
       return {
         ...state,
-        filters: dedupeFilters(action.filters, state.filters || [])
+        filters: action.filters
       }
   }
 }

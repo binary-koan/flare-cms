@@ -11,7 +11,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            plugins: ["babel-plugin-macros"],
+            plugins: [
+              "babel-plugin-macros",
+              "@babel/plugin-proposal-optional-chaining",
+              "@babel/plugin-proposal-nullish-coalescing-operator"
+            ],
             presets: ["@babel/preset-react", "@babel/preset-typescript"]
           }
         }
@@ -34,7 +38,7 @@ module.exports = {
     }
   },
   devServer: {
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     contentBase: path.resolve(__dirname, "dist"),
     historyApiFallback: true
   },

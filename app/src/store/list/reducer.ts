@@ -24,22 +24,4 @@ const reducer: Reducer<any, Action> = (state = initialState, action) => {
   }
 }
 
-const dedupeFilters = (newFilters: ListFilter[], existingFilters: ListFilter[]) => {
-  const filters = [...existingFilters]
-
-  newFilters.forEach(filter => {
-    const existingIndex = filters.findIndex(
-      other => other.name === filter.name && other.attribute === filter.attribute
-    )
-
-    if (existingIndex) {
-      filters.splice(existingIndex, 1, filter)
-    } else {
-      filters.push(filter)
-    }
-  })
-
-  return filters
-}
-
 export default reducer

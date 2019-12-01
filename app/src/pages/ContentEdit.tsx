@@ -23,9 +23,9 @@ const Title = styled.h1`
   font-size: 1.563rem;
 `
 
-const ContentEdit: React.FunctionComponent<
-  RouteComponentProps<{ id: string }> & { contentType: ContentType }
-> = ({ match, contentType, ...props }) => {
+const ContentEdit: React.FunctionComponent<RouteComponentProps<{ id: string }> & {
+  contentType: ContentType
+}> = ({ match, contentType, ...props }) => {
   const formState = useSelector(state => state.form, shallowEqual)
   const load = useOperation(loadData)
   const save = useOperation(saveDraft)
@@ -62,8 +62,8 @@ const ContentEdit: React.FunctionComponent<
         </Header>
 
         <Form>
-          {contentType.attributes.map(item => (
-            <Editor key={item.id} path={[item.id]} name={item.name} attributeType={item.type} />
+          {contentType.editableAttributes.map(item => (
+            <Editor key={item.id} path={[item.id]} name={item.name} editor={item.editor} />
           ))}
         </Form>
       </MainContent>

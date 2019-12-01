@@ -15,7 +15,7 @@ const SubformEditor: React.FunctionComponent<{
 }> = ({ path, attributeType, ...props }) => (
   <Panel {...props}>
     {attributeType.attributes.map(item => (
-      <Editor path={[...path, item.id]} name={item.name} attributeType={item.type} />
+      <Editor path={[...path, item.id]} name={item.name} editor={item.editor} />
     ))}
   </Panel>
 )

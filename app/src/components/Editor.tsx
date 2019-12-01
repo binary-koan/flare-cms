@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { ContentAttributeType, EditorWidth } from "@shared/types"
+import { ContentAttributeType, EditorWidth, Editor } from "@shared/types"
 
 import useFormField from "@src/hooks/form/useFormField"
 
@@ -16,26 +16,26 @@ const editors: { [T in ContentAttributeType["editor"]["type"]]?: React.FunctionC
   subform: SubformEditor
 }
 
-function Editor({
+function EditorView({
   path,
   name,
-  attributeType,
+  editor,
   ...props
 }: {
   path: string[]
   name: string
-  attributeType: ContentAttributeType
+  editor: Editor
 }) {
   const { value, onChange } = useFormField(path)
-  const width = attributeType.editor.width || EditorWidth.FULL
+  const width = editor.width || EditorWidth.FULL
 
   let Component
 
-  if ((Component = editors[attributeType.editor.type])) {
+  if ((Component = editors[editor.type])) {
     return (
       <Wrapper width={width} {...props}>
         <Labelled label={name}>
-          <Component path={path} attributeType={attributeType} {...attributeType.editor} />
+          <Component path={path} {...editor} />
         </Labelled>
       </Wrapper>
     )
@@ -43,9 +43,9 @@ function Editor({
 
   return (
     <Wrapper width={width} {...props}>
-      <Input name={name} value={value} onChange={onChange} editor={attributeType.editor} />
+      <Input name={name} value={value} onChange={onChange} editor={editor} />
     </Wrapper>
   )
 }
 
-export default Editor
+export default EditorView

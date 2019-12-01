@@ -70,8 +70,8 @@ const ContentNew: React.FunctionComponent<{ contentType: ContentType }> = ({
         </Header>
 
         <Form>
-          {contentType.attributes.map(item => (
-            <Editor key={item.id} path={[item.id]} name={item.name} attributeType={item.type} />
+          {contentType.editableAttributes.map(item => (
+            <Editor key={item.id} path={[item.id]} name={item.name} editor={item.editor} />
           ))}
         </Form>
       </MainContent>

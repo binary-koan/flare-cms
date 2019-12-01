@@ -19,9 +19,7 @@ const ItemWrapper = styled.li`
 
 const ItemEditWrapper = styled(Link)`
   flex: 1;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas: "title icon" "description icon" "caption icon";
+  display: flex;
   align-items: center;
   padding: 1.5rem;
   border-top-left-radius: 0.25rem;
@@ -36,10 +34,17 @@ const ItemEditWrapper = styled(Link)`
   }
 `
 
+const ItemContent = styled.div`
+  flex: 1;
+  display: grid;
+  grid-row-gap: 0.75rem;
+  margin-right: 1rem;
+`
+
 const ItemTitle = styled.h3`
   font-size: 1.25rem;
   line-height: 1;
-  margin: 0 0 0.5rem 0;
+  margin: 0;
 
   &:empty {
     display: none;
@@ -47,7 +52,7 @@ const ItemTitle = styled.h3`
 `
 
 const ItemDescription = styled.div`
-  margin: 0 0 0.75rem 0;
+  margin: 0;
 
   &:empty {
     display: none;
@@ -94,9 +99,11 @@ const Item: React.FunctionComponent<{
 }> = ({ title, description, caption, to, ...props }) => (
   <ItemWrapper {...props}>
     <ItemEditWrapper to={to}>
-      {<ItemTitle>{title}</ItemTitle>}
-      {<ItemDescription>{description}</ItemDescription>}
-      {<ItemCaption>{caption}</ItemCaption>}
+      <ItemContent>
+        <ItemTitle>{title}</ItemTitle>
+        <ItemDescription>{description}</ItemDescription>
+        <ItemCaption>{caption}</ItemCaption>
+      </ItemContent>
 
       <EditIcon name="pencil" />
     </ItemEditWrapper>

@@ -8,7 +8,8 @@ import { filterData } from "@src/store/list/operations"
 import { useSelector } from "react-redux"
 
 const Wrapper = styled.div`
-  max-width: 16rem;
+  max-width: 20rem;
+  padding: 1rem 1.5rem;
 `
 
 const FilterInput: React.FunctionComponent<{
@@ -61,12 +62,12 @@ const FilterInput: React.FunctionComponent<{
   )
 }
 
-const Filters: React.FunctionComponent<{ listView: ListView }> = ({ listView }) => {
-  if (!listView.filters) return null
+const Filters: React.FunctionComponent<{ filters: Filter[] }> = ({ filters }) => {
+  if (!filters) return null
 
   return (
     <Wrapper>
-      {listView.filters.map((filter, index) => (
+      {filters.map((filter, index) => (
         <FilterInput key={filter.name} index={index} filter={filter} />
       ))}
     </Wrapper>

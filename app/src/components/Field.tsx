@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { ContentAttributeType } from "@shared/types"
+import { Field } from "@shared/types"
 
 import TextField from "@src/components/fields/TextField"
 import NumberField from "@src/components/fields/NumberField"
@@ -10,7 +10,7 @@ import JsonField from "@src/components/fields/JsonField"
 
 const Wrapper = styled.span``
 
-const fields: { [T in ContentAttributeType["field"]["type"]]?: React.FunctionComponent<any> } = {
+const fields: { [T in Field["type"]]?: React.FunctionComponent<any> } = {
   text: TextField,
   number: NumberField,
   boolean: BooleanField,
@@ -18,24 +18,15 @@ const fields: { [T in ContentAttributeType["field"]["type"]]?: React.FunctionCom
   json: JsonField
 }
 
-function Field({
-  name,
-  value,
-  attributeType,
-  ...props
-}: {
-  name: string
-  value: any
-  attributeType: ContentAttributeType
-}) {
+function FieldView({ name, value, field, ...props }: { name: string; value: any; field: Field }) {
   if (!value) return null
 
   let Component
 
-  if ((Component = fields[attributeType.field.type])) {
+  if ((Component = fields[field.type])) {
     return (
       <Wrapper title={name} {...props}>
-        <Component value={value} attributeType={attributeType} {...attributeType.editor} />
+        <Component value={value} {...field} />
       </Wrapper>
     )
   }
@@ -43,4 +34,4 @@ function Field({
   return null
 }
 
-export default Field
+export default FieldView

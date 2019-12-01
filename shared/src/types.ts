@@ -7,6 +7,7 @@ import {
   StringArrayEditor,
   ObjectArrayEditor
 } from "./types/editor"
+import { Field } from "./types/field"
 
 export * from "./types/attribute"
 export * from "./types/editor"
@@ -20,16 +21,16 @@ export interface ContentType {
   id: string
   name: string
   singularName: string
+  editableAttributes: ContentAttribute[]
   listViews: ListView[]
-  attributes: ContentAttribute[]
+  filters?: Filter[]
 }
 
 export type ListView = {
   type: "cards"
-  titleAttributes?: string[]
-  descriptionAttributes?: string[]
-  captionAttributes?: string[]
-  filters?: Filter[]
+  titleFields?: Field[]
+  descriptionFields?: Field[]
+  captionFields?: Field[]
 }
 
 export type Filter =
@@ -48,8 +49,7 @@ export type Filter =
     }
   | { type: "contains"; name: string; default?: string; attributes: string[]; editor: StringEditor }
 
-export interface ContentAttribute {
+export type ContentAttribute = ContentAttributeType & {
   id: string
   name: string
-  type: ContentAttributeType
 }

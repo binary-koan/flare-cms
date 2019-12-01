@@ -1,4 +1,5 @@
 const path = require("path")
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin")
 
 module.exports = {
   mode: "development",
@@ -37,6 +38,7 @@ module.exports = {
       "@shared": path.resolve(__dirname, "../shared/src")
     }
   },
+  plugins: [new ForkTsCheckerWebpackPlugin()],
   devServer: {
     host: "0.0.0.0",
     contentBase: path.resolve(__dirname, "dist"),
